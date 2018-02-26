@@ -108,7 +108,7 @@ module.exports = function(config) {
         );
     }
 
-    function deleteEntity(table, id, cb){
+    function deleteEntity(table, id){
         return ensureTable(table)
         .then(value =>
             deleteEntityPromise(table, {
@@ -128,12 +128,27 @@ module.exports = function(config) {
         );
     }
 
+    function isFunction(functionToCheck) {
+        return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+       }
+
     function nodeify(promise, cb){
+
+        if (!cb) {
+            cb = function(error, result){
+                if (error){
+                    console.error(`Function call failed with error and no callback`);
+                    console.error(error);
+                }
+            }
+        }
+
         promise.then(value =>
             cb(null, value),
             error => cb(error)
         ).catch(error => {
             console.error(`Error in callback ${error}`);
+            console.error(error);
         });
     }
 
@@ -154,15 +169,18 @@ module.exports = function(config) {
         },
         users: {
             get: function(user_id, cb) {
+                console.info(`Getting user ${user_id}`);
                 nodeify(retrieveEntity(userTable, user_id), cb);
             },
             save: function(user_data, cb) {
+                console.info(`Saving user ${JSON.stringify(user_data)}`);
                 nodeify(insertEntity(userTable, user_data), cb);
             },
             delete: function(user_id, cb) {
                 nodeify(deleteEntity(userTable, user_id), cb);
             },
             all: function(cb) {
+                console.info('Querying users');
                 nodeify(allEntities(userTable), cb);
             }
         },
