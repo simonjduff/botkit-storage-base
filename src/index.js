@@ -26,8 +26,8 @@ const azure = require('azure-storage');
 
 module.exports = function(config) {
 
-    if (!config || !config.storageConnectionString || !config.tablePrefix){
-        throw 'You must provide storageConnectionString and tablePrefix in config';
+    if (!config || !config.tablePrefix){
+        throw 'You must providetablePrefix in config';
     }
 
     var tableService = azure.createTableService(config.storageConnectionString);
