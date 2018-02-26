@@ -1,6 +1,6 @@
 {
   "name": "botkit-storage-azure-table-storage",
-  "version": "1.0.1-debug6",
+  "version": "1.0.2",
   "description": "Azure Table Storage plugin for botkit",
   "main": "src/index.js",
   "directories": {
